@@ -44,6 +44,27 @@ sudo yum install python3 texlive texlive-formats-extra texlive-lang-french
 
 ## 3. Paramétrage
 
-pour la configuration allet sur la [documention de paramètre](./doc/setting.MD)
+Pour la configuration allet sur la [documention de paramètre](./doc/setting.MD)
 
 ## 4. Utilisation
+Ce situer dans le dossier parent de la racine de cert_bulletin_gen.
+```
+python3 -m cert_bulletin_gen
+```
+
+```
+usage: Cert Bulletin Generator [-h] [-c CONFIG] [--no-compil] [-v] [--pdf-name PDF_NAME] [--version]
+
+Generate a bulletin of vulnerabilities from cert
+
+options:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config CONFIG
+                        config file
+  --no-compil           no latex compilation, only latex file generation
+  -v, --verbose         Increase output verbosity
+  --pdf-name PDF_NAME   name of the pdf file
+  --version             show program's version number and exit
+
+An application wich generate a bulletin of vulnerabilities from cert
+```
