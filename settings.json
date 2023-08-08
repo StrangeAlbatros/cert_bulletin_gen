@@ -1,0 +1,32 @@
+{
+    "output":{
+        "path": "cert_bulletin_gen/aout",
+        "name": "bulletin_veille"
+    },
+    "template":{
+        "type":"report",
+        "path":{ 
+            "main": "cert_bulletin_gen/templates/report.tex",
+            "sub": "cert_bulletin_gen/templates/cert.tex"
+        },
+        "data": {
+            "title":"Bulletin de veille de la semaine $week_of_year$",
+            "author":"Cert bulletin generator"
+        }
+    },
+    "timeframe": {
+        "range": "week",
+        "begin": "friday"
+    },
+    "parser":{
+        "certfr":{
+            "url":[
+                "https://www.cert.ssi.gouv.fr/alerte/",
+                "https://www.cert.ssi.gouv.fr/avis/"
+            ],
+            "ext": "page",
+            "title":"CERT-FR",
+            "description":"Centre gouvernemental de veille, d'alerte et de réponse aux attaques informatiques"
+        }
+    }
+}
