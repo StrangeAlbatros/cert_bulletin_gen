@@ -1,0 +1,47 @@
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+
+\chapter{ {{content.title}} }
+
+{% for event in content.events %}
+\section{ {{ event.subject }} }
+{% if event.risks|length %}
+\subsection*{RISQUE(S)}
+\begin{itemize}
+{% for risk in event.risks %}
+\item{{ risk }}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+{% if event.system_affected|length %}
+\subsection*{SYSTÈMES AFFECTÉS}
+\begin{itemize}
+{% for sys in event.system_affected %}
+\item {{ sys }}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+\subsection*{RÉSUMÉ}
+{{event.resume}}
+
+\subsection*{SOLUTION}
+{{event.solutions}}
+
+
+{% if event.documentations|length %}
+\subsection*{DOCUMENTATION}
+\begin{itemize}
+{% for doc in event.documentations %}
+\item{{ doc }}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+{% if event.etal_doc_manage|length %}
+\subsection*{GESTION DÉTAILLÉE DU DOCUMENT}
+{{event.etal_doc_manage}}
+{% endif %}
+{% endfor %}
+

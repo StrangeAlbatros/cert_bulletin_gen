@@ -1,0 +1,22 @@
+\documentclass[]{report}
+\usepackage{titlesec}
+\usepackage[french]{babel}
+\usepackage[autolanguage]{numprint} % for the \nombre command
+\usepackage[colorlinks = true, urlcolor = black, hyperfootnotes =
+false,citecolor=black,linkcolor=black,breaklinks=true]{hyperref}
+\usepackage[utf8]{inputenc}
+
+% Title Page
+\title{ {{content.title }} }
+\author{ {{content.author}} }
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+\begin{sloppypar}
+{% for name in content.chapters %}
+\include{ {{name}} }
+{% endfor %}
+\end{sloppypar}
+\end{document}
