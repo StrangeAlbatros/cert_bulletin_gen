@@ -65,7 +65,7 @@ class Exporter:
                 files[f"{out_folder}/main.tex"] = self.template_render(
                     t_data[1],
                     {
-                        "title":tpl_conf.get('title'),
+                        "title": tpl_conf.get('title'),
                         "author":tpl_conf.get('author'),
                         "chapters": [snake_case(cert) for cert,events in data.items()]
                     }
@@ -97,14 +97,14 @@ class Exporter:
 
         self.compile()
 
-        if kwargs.get('pdf_name', False):
+        if self.conf['output'].get('name', False):
             rename_file(
                 f"{out_folder}/main.pdf",
-                f"{out_folder}/{kwargs.get('pdf_name')}.pdf"
+                f"{out_folder}/{self.conf['output'].get('name')}.pdf"
             )
             
 
-        self.logger.info(f"Report generated : {self.conf['output'].get('path')}/{kwargs.get('pdf_name', 'main')}.pdf")
+        self.logger.info(f"Report generated : {self.conf['output'].get('path')}/{kwargs.get('pdf_name', 'report')}.pdf")
 
     def compile(self):
         """ compile the latex file to pdf """
@@ -115,7 +115,7 @@ class Exporter:
             resp = self.execute_unix_command("cd cert_bulletin_gen/aout && pdflatex main.tex")
         else:
             pass
-
+            #TODO : manage windows
         if resp == 0:
             self.logger.success("Compilation done")
         else:
@@ -129,7 +129,10 @@ class Exporter:
         
         for f in listdir(self.conf['output'].get('path')):
             if f.split(".")[-1] in LATEX_INTER_FILE:
-                remove(f)
+                try:
+                    remove(f"{self.conf['output'].get('path')}/{f}")
+                except Exception as e:
+                    self.logger.error(f"Error while removing {f} : {e}")
 
     def execute_unix_command(self, command):
         """ execute the command and retrieve its output """
