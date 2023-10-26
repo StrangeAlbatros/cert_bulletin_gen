@@ -33,15 +33,21 @@ Application qui génère un bulletin de veille informatique à partir des alerte
 #### Linux debian like
 
 ```
-sudo apt install python3 texlive texlive-formats-extra texlive-lang-french
+sudo apt install -y python3 texlive texlive-formats-extra texlive-lang-french
 ```
 #### Linux red hat like
 ```
-sudo yum install python3 texlive texlive-formats-extra texlive-lang-french
+sudo yum install -y python3 texlive texlive-formats-extra texlive-lang-french
 ```
 
 ## 2. Installation
 
+### Linux
+```
+python3 -m venv .venv
+source .venv
+pip3 install -r requirements.txt
+```
 ## 3. Paramétrage
 
 Pour la configuration allet sur la [documention de paramètre](./doc/setting.MD)

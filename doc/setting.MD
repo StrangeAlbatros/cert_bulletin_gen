@@ -82,9 +82,13 @@ pas encore fait
 
 Configuration de la sortie des livrables.
 
+- `path`: chemin du repertoire de sortie
+- `name` (optionel): nom du fichier de sortie
+
 configuration par défaut:
 ```json
 "output":{
-    "path": "cert_bulletin_gen/aout"
+    "path": "cert_bulletin_gen/aout",
+    "name": "nom de fichier"
 }
 ```
