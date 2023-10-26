@@ -17,7 +17,7 @@ FG = {
 }
 
 class Log:
-    # Quick log class for CLI output
+    """ quick log class for CLI output """
     def __init__(self, **kwargs):
         """ Init the logger """
         self.level = 'debug' if kwargs.get('debug') else 'info'
