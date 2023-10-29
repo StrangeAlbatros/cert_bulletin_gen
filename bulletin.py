@@ -49,7 +49,6 @@ class Bulletin:
 
         if args.pdf_name:
             compile_args['pdf_name'] = args.pdf_name
-        
         self.exporter.export(**compile_args)
 
     def get_scraper(self):
@@ -68,5 +67,4 @@ class Bulletin:
 
         if data:
             self.conf = Config(**data)
-
 
