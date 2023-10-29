@@ -47,7 +47,6 @@ class PageParser(ABC):
             datetime_obj.month,
             datetime_obj.day
         )
-
         if date_event < self.min_date:
             return 1
         if date_event >= self.max_date:
