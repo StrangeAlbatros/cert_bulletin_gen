@@ -32,11 +32,10 @@ def remove_files_in_directory(directory_path):
     except OSError as e:
         print(f"Error: {e}")
 
-def rename_file(file_path, new_name):
+def rename_file(file_path, new_path):
     """ Rename a file """
     try:
-        new_file_path = join(file_path, new_name)
-        rename(file_path, new_file_path)
+        rename(file_path, new_path)
     except OSError as e:
         print(f"Error: {e}")
 
