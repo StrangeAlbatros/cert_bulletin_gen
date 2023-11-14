@@ -17,6 +17,7 @@ Voici les structures des données injecter sous forme de dictionnaire dans le te
 
 Les autres fichier sont les chapitre du document **LaTeX**
 
+### Alerte de cert
 
 Voici les structures des données injecter sous forme de dictionnaire dans le template :
 
@@ -30,3 +31,15 @@ Voici les structures des données injecter sous forme de dictionnaire dans le te
         - solutions: solution de la CVE
         - documentations: liste des documentations
         - etal_doc_manage: gestion détaillé de la CVE
+
+### Event flux RSS
+
+Voici les structures des données injecter sous forme de dictionnaire dans le template :
+
+- content
+    - title : titre du chapitre
+    - events : list des informations
+        - title: nom de la news
+        - data: contenu de la news
+        - link: lien de la news
+        - published: date de publication de la news

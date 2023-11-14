@@ -1,5 +1,16 @@
 # Parametre
 
+## Paramètre globale
+
+- `lang`(obligatoire): langue cible utilisé pour le traducteur
+
+Exemple:
+```json
+{
+    "lang": "fr"
+}
+```
+
 ## Template
 
 - `path` (obligatoire) :  chemins des templates
@@ -27,15 +38,17 @@ Configuration des différents Parser.
 
 Un parseur doit avoir le même nom que le *nom.py* du parser.
 
+- `template_name`(obligatoire): nom du template à utilisé
 - `url` (obligatoire) : liste des urls à utiliser
 - `title` (obligatoire) : nom du cert
 - `description`  (obligatoire): description du cert
 - ext (optionel): extension des urls pour effectuer d'autres recherches
 
-exemple pour Certfr:
+exemple pour **Certfr** et **cyware**:
 ```json
 "parser":{
     "certfr":{
+        "template_name": "cert",
         "url":[
             "https://www.cert.ssi.gouv.fr/alerte/",
             "https://www.cert.ssi.gouv.fr/avis/"
@@ -43,7 +56,15 @@ exemple pour Certfr:
         "ext": "page",
         "title":"CERT-FR",
         "description":"Centre gouvernemental de veille, d'alerte et de réponse aux attaques informatiques"
-    }
+    },
+     "cyware":{
+            "template_name":"rss",
+            "url":[
+                "https://cyware.com/allnews/feed"
+            ],
+            "title":"Cyware",
+            "description":"Cyware is the industry's only Virtual Cyber Fusion platform provider, offering secure collaboration, threat intelligence sharing, and integrated solutions to seamlessly fuse intelligence across the cybersecurity ecosystem"
+        }
 }
 ```
 
@@ -71,12 +92,6 @@ Exemple:
     "begin": "friday"
 }
 ```
-
-### begin and end date
-
-format YYYY-MM-DD
-
-pas encore fait
 
 ## Output
 

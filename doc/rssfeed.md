@@ -1,10 +1,14 @@
+# Flux RSS
+
+<img src="./img/rss_feed.png" width="300">
+
 # Scraper
 
-Le repertoire par défaut des scrapper est:  `cert_bulletin_gen/parser/scraper`
+Le repertoire par défaut des lecteur de flux rss est:  `cert_bulletin_gen/parser/scraper`
 
-## PageParser
+## RssParser
 
-[PageParser](../parser/page_parser.py)
+[RssParser](../parser/rss_parser.py)
 
 ## Custom parser
 
@@ -29,9 +33,9 @@ class CustomParser(PageParser):
 
 Les evenement doivent être stocker dans herité de PageParser `self.events` qui est une liste d'event.
 
-Les objet **Event** sont prévu pour stocker des alertes de Cert.
+Les objet **RssEvent** sont prévu pour stocker des information de flux rss.
 
-lien de du fichier python de [Event](../models/event.py)
+lien de du fichier python de [RssEvent](../models/rss_event.py)
 
 ### 2. Modification __init__.py
 
@@ -49,22 +53,20 @@ Un parseur doit avoir le même nom que le *nom.py* du parser.
 
 ```json
     "parser":{
-        "certfr":{
-            "template_name": "cert",
+        "cyware":{
+            "translate": true,
+            "template_name":"rss",
             "url":[
-                "https://www.cert.ssi.gouv.fr/alerte/",
-                "https://www.cert.ssi.gouv.fr/avis/"
+                "https://cyware.com/allnews/feed"
             ],
-            "ext": "page",
-            "title":"CERT-FR",
-            "description":"Centre gouvernemental de veille, d'alerte et de réponse aux attaques informatiques"
+            "title":"Cyware",
+            "description":"Cyware is the industry's only Virtual Cyber Fusion platform provider, offering secure collaboration, threat intelligence sharing, and integrated solutions to seamlessly fuse intelligence across the cybersecurity ecosystem"
         },
         "customparser":{
             "template_name": "mon template",
             "url":[
                 "mon_url"
             ],
-            "ext": "ext",
             "title": "Custom Parser",
             "description": "Une description"
         }
