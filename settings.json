@@ -1,4 +1,5 @@
 {
+    "lang":"fr",
     "output":{
         "path": "cert_bulletin_gen/aout",
         "name": "bulletin_veille"
@@ -7,7 +8,8 @@
         "type":"report",
         "path":{ 
             "main": "cert_bulletin_gen/templates/report.tex",
-            "sub": "cert_bulletin_gen/templates/cert.tex"
+            "cert": "cert_bulletin_gen/templates/cert.tex",
+            "rss": "cert_bulletin_gen/templates/rss.tex"
         },
         "data": {
             "title":"Bulletin de veille de la semaine $week_of_year$",
@@ -20,6 +22,7 @@
     },
     "parser":{
         "certfr":{
+            "template_name":"cert",
             "url":[
                 "https://www.cert.ssi.gouv.fr/alerte/",
                 "https://www.cert.ssi.gouv.fr/avis/"
@@ -27,6 +30,15 @@
             "ext": "page",
             "title":"CERT-FR",
             "description":"Centre gouvernemental de veille, d'alerte et de réponse aux attaques informatiques"
+        },
+        "cyware":{
+            "translate": true,
+            "template_name":"rss",
+            "url":[
+                "https://cyware.com/allnews/feed"
+            ],
+            "title":"Cyware",
+            "description":"Cyware is the industry's only Virtual Cyber Fusion platform provider, offering secure collaboration, threat intelligence sharing, and integrated solutions to seamlessly fuse intelligence across the cybersecurity ecosystem"
         }
     }
 }
