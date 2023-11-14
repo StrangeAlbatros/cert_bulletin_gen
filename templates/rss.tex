@@ -1,0 +1,21 @@
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+
+\chapter{ {{content.title}} }
+
+
+{% for event in content.events %}
+\section{ {{ event.title }} }
+
+\begin{itemize}
+
+\item {{ event.link }}
+\item {{ event.published }}
+
+\end{itemize}
+
+{% for paragraph in event.data %}
+{{ paragraph }}
+{% endfor %}
+
+{% endfor %}

@@ -2,3 +2,5 @@ requests
 bs4
 argparse
 jinja2
+feedparser
+deep_translator
