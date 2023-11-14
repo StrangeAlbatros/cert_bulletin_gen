@@ -10,14 +10,14 @@ from ..page_parser import PageParser
 from cert_bulletin_gen.models import Event
 
 class Certfr(PageParser):
-
+    """ Parse the certfr bulletin """
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         warnings.filterwarnings("ignore", category=GuessedAtParserWarning, module='bs4')
         self.urls = kwargs.get('url')
         self.ind_page = 1
-        self.ext = kwargs.get('ext')
-        self.alertes = []
+        self.ext = kwargs.get('ext') # extension of the url for the next page
+        self.events = []
         self.start_treament()
 
     def start_treament(self):
@@ -26,16 +26,22 @@ class Certfr(PageParser):
         for url in self.urls:
             content = self.send_request(url)
 
+            # if centent is int, 
+            # it means that the date is not in the range
             if isinstance(content, int):
                 continue
-            
+
+            # get all cve from the first page
             all_cve = []
             if "avis" in url:
                 all_cve = self.main_page(content, type="avis")
             else:
                 all_cve = self.main_page(content, type="alerte")
-
-            while not all_cve or all_cve != 1:
+            
+            # if all_cve is 1, it means that the date is not in the range 
+            # (date is too old)
+            while all_cve !=1 :
+                # get all cve from the next page
                 research = self.main_page(
                     self.send_request(self.next_page(url))
                 )
@@ -52,16 +58,17 @@ class Certfr(PageParser):
                     f"{url}{cve}"
                 )
                 if r_data != 404 or 403:
-                    self.alertes.append(self.get_event(r_data))
+                    self.events.append(self.get_event(r_data))
+
             self.ind_page = 1
 
-        if self.alertes:
-            self.logger.success(f"{len(self.alertes)} event(s) found for certfr")
+        if self.events:
+            self.logger.success(f"{len(self.events)} event(s) found for certfr")
         else:
-            self.info("No events found for certfr")
+            self.logger.info("No events found for certfr")
 
     def next_page(self, url):
-        """ Return the next page """
+        """ Return the next page with the extension """
         self.ind_page += 1
         return f"{url}{self.ext}/{self.ind_page}/"
 

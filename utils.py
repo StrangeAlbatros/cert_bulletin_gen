@@ -57,7 +57,6 @@ def get_week_timeframe(day_of_week):
     end_date = begin_date + timedelta(days=6)
     return begin_date, end_date
 
-#FIXME: This function is not working properly
 def get_month_timeframe(year,month):
     """ Return the timeframe for a specific month """
     # set the first day of the month
@@ -69,7 +68,6 @@ def get_month_timeframe(year,month):
 
     return begin_date, end_date
 
-#FIXME: This function is not working properly
 def get_year_timeframe(year):
     """ Return the timeframe for a specific year """
     begin_date = date(year, 1, 1)

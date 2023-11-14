@@ -8,6 +8,7 @@ from json import dumps, load
 from .parser.scraper import *
 from .models.config import Config
 from .models.logger import Log
+from .models.translator import Translator
 from .export import Exporter
 
 class Bulletin:
@@ -24,6 +25,11 @@ class Bulletin:
         if not self.conf:
             raise Exception("ERREUR: Impossible de charger la configuration")
 
+        self.translator = Translator(lang=self.conf.lang)
+        self.start_treatment(args)
+
+    def start_treatment(self, args):
+        """ Start the treatment """
         conf_cert = { k:v for k,v in self.conf.parser.items()}
 
         self.parser = []
@@ -31,19 +37,23 @@ class Bulletin:
             if name.lower() in conf_cert:
                 conf_cert[name.lower()].update(self.conf.timeframe)
                 conf_cert[name.lower()].update({"logger":self.log})
+                conf_cert[name.lower()].update({"translator":self.translator})
                 self.parser.append(obj(**(conf_cert[name.lower()])))
 
+        # export the data to the latex template
         self.exporter = Exporter(
-            data={elt.__class__.__name__.lower(): elt.alertes for elt in self.parser},
+            data={elt.__class__.__name__.lower(): elt.events for elt in self.parser},
             logger=self.log,
             conf={
                 "output":self.conf.output,
                 "template":self.conf.template,
+                "parser":self.conf.parser,
             }
         )
 
+        # latex compile the bulletin
         compile_args = {
-            'data': {elt.__class__.__name__.lower(): elt.alertes for elt in self.parser},
+            'data': {elt.__class__.__name__.lower(): elt.events for elt in self.parser},
             'compile': args.no_compil,
         }
 

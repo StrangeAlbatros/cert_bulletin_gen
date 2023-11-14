@@ -10,6 +10,7 @@ DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sun
 class Config:
 
     def __init__(self, **kwargs) -> None:
+        self.lang = kwargs.get("lang", "fr")
         self.output = kwargs.get("output")
         self.template = kwargs.get("template")
         self.timeframe = kwargs.get("timeframe")
@@ -92,7 +93,9 @@ class Config:
             raise Exception("ERREUR: Impossible de charger la configuration")
         
         # update title
-        self.parse_title(self.template['data']['title'])
+        self.template['data']['title'] = self.parse_title(
+            self.template['data']['title']
+        )
 
     @property
     def parser(self):
@@ -117,5 +120,5 @@ class Config:
 
         for keyword, value in title_keywords.items():
             title = title.replace(keyword, value)
-        
+
         return title

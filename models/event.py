@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from re import findall
-from json import dumps
 
 class Event:
 
@@ -81,11 +80,16 @@ class Event:
         # remove some unicode caracter
         latex_format['system_affected'] = self.remove_unicode(self.system_affected)
         latex_format['system_affected'] = [ elt.replace("_", "\_") for elt in latex_format['system_affected'] ]
+
+        # remove empty item (bug with parser)
+        if latex_format['documentations'][-1] == " ":
+            latex_format['documentations'].pop(-1)
+
         return latex_format
     
     def remove_unicode(self, list_str):
         """ Remove unicode caracter from a list of string """
-        return [ elt.encode("utf-8").decode().replace(" ", ' ').replace(' ', ' ')  for elt in list_str ]
+        return [ elt.encode("utf-8").decode().replace(" ", ' ').replace(' ', ' ')  for elt in list_str if elt]
     
     def __dict__(self):
         """ Return a dict with all the attributes """

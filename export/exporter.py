@@ -6,9 +6,13 @@ from os.path import exists,isfile
 from os import remove, listdir
 from platform import system
 from subprocess import call
+from shutil import copytree
 from json import dumps
 
 from cert_bulletin_gen.utils import read_file, write_file, snake_case, rename_file
+
+from cert_bulletin_gen.models.event import Event
+from cert_bulletin_gen.models.rss_event import RssEvent
 
 LATEX_INTER_FILE = [
     "aux",
@@ -52,13 +56,20 @@ class Exporter:
     def export(self, **kwargs):
         """ export the data to the template """
         self.logger.indication("Start export")
-        #TODO : manage type of latex document (report...)
         data = kwargs.get('data')
         out_folder = self.conf['output'].get('path')
         tpl_conf = self.conf['template'].get('data')
         files = {}
 
+        # copy the template folder images
+        if not exists(f"{out_folder}/img"):
+            copytree("cert_bulletin_gen/templates/img", f"{out_folder}/img")
+
         self.logger.info("Generating latex files")
+
+        # match the name of the template to the name of the parser
+        match_name_tpl =  self.match_name_to_template()
+
         for name,t_data in self.templates.items():
             if t_data[0] == "main":
                 # main template
@@ -70,18 +81,18 @@ class Exporter:
                         "chapters": [snake_case(cert) for cert,events in data.items()]
                     }
                 )
-            elif t_data[0] == "sub":
-                # sub template
-                for cert,events in data.items():
-                    title = cert[0].upper() + cert[1:]
-                    files[f"{out_folder}/{cert}.tex"] = self.template_render(
-                        t_data[1],
-                        {
-                            "title": title,
-                            "events": [event.latex_support_format() for event in events]
-                        }
-                    )
-        
+            else:
+                for elt in match_name_tpl[t_data[0]]:
+                    cert = elt[0].upper() + elt[1:]
+                    if elt in data:
+                        files[f"{out_folder}/{elt}.tex"] = self.template_render(
+                            t_data[1],
+                            {
+                                "title": cert,
+                                "events": [event.latex_support_format() for event in data[elt]]
+                            }
+                        )
+
         if files:
             self.logger.success("Latex files generated")
         else:
@@ -102,9 +113,18 @@ class Exporter:
                 f"{out_folder}/main.pdf",
                 f"{out_folder}/{self.conf['output'].get('name')}.pdf"
             )
-            
 
         self.logger.info(f"Report generated : {self.conf['output'].get('path')}/{kwargs.get('pdf_name', 'report')}.pdf")
+
+    def match_name_to_template(self):
+        """ match the name of the template to the name of the parser """
+        match = {}
+
+        for name, data in self.conf['parser'].items():
+            if match.get(data.get('template_name'), True):
+                match[data.get('template_name')] = []
+            match[data.get('template_name')].append(name)
+        return match
 
     def compile(self):
         """ compile the latex file to pdf """
