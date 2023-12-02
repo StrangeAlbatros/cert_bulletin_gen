@@ -7,9 +7,9 @@ from os import remove, listdir
 from platform import system
 from subprocess import call
 from shutil import copytree
-from json import dumps
 
 from cert_bulletin_gen.utils import read_file, write_file, snake_case, rename_file
+from cert_bulletin_gen.logger import LOGGER
 
 from cert_bulletin_gen.models.event import Event
 from cert_bulletin_gen.models.rss_event import RssEvent
@@ -24,7 +24,6 @@ class Exporter:
 
     def __init__(self, **kwargs) -> None:
         self.conf =kwargs.get('conf')
-        self.logger = kwargs.get('logger')
         self.templates = None
         self.contents = {}
 
@@ -43,19 +42,21 @@ class Exporter:
         """ load the template from the config file """
         paths  = self.conf['template'].get('path', None)
         if not paths:
+            LOGGER.error("Pas de champs \"path\" dans le fichier de configurations (dans \"templates\")")
             raise Exception(
                 "Pas de champs \"path\" dans le fichier de configurations (dans \"templates\")"
             )
         
         for type,path in paths.items():
             if not exists(path):
+                LOGGER.error(f"Le fichier {path} est introuvable")
                 raise FileNotFoundError(f"Le fichier {path} est introuvable")
 
         self.templates = {tpl: (type,read_file(tpl)) for type,tpl in paths.items() if isfile(tpl)}
 
     def export(self, **kwargs):
         """ export the data to the template """
-        self.logger.indication("Start export")
+        LOGGER.info("Start export")
         data = kwargs.get('data')
         out_folder = self.conf['output'].get('path')
         tpl_conf = self.conf['template'].get('data')
@@ -65,7 +66,7 @@ class Exporter:
         if not exists(f"{out_folder}/img"):
             copytree("cert_bulletin_gen/templates/img", f"{out_folder}/img")
 
-        self.logger.info("Generating latex files")
+        LOGGER.info("Generating latex files")
 
         # match the name of the template to the name of the parser
         match_name_tpl =  self.match_name_to_template()
@@ -94,16 +95,16 @@ class Exporter:
                         )
 
         if files:
-            self.logger.success("Latex files generated")
+            LOGGER.info("Latex files generated")
         else:
-            self.logger.warning("No data to export")
+            LOGGER.warning("No data to export")
             return
 
         for f_name, content in files.items():
             write_file(f_name,content)
 
         if kwargs.get('compile', False):
-            self.logger.info("No compile option activated")
+            LOGGER.debug("No compile option activated")
             return
 
         self.compile()
@@ -114,7 +115,7 @@ class Exporter:
                 f"{out_folder}/{self.conf['output'].get('name')}.pdf"
             )
 
-        self.logger.info(f"Report generated : {self.conf['output'].get('path')}/{kwargs.get('pdf_name', 'report')}.pdf")
+        LOGGER.info(f"Report generated : {self.conf['output'].get('path')}/{kwargs.get('pdf_name', 'report')}.pdf")
 
     def match_name_to_template(self):
         """ match the name of the template to the name of the parser """
@@ -128,7 +129,7 @@ class Exporter:
 
     def compile(self):
         """ compile the latex file to pdf """
-        self.logger.indication("Start compilation")
+        LOGGER.info("Start compilation")
         os = system().lower()
 
         if os.startswith('linux') or os.startswith('darwin'):
@@ -137,22 +138,22 @@ class Exporter:
             pass
             #TODO : manage windows
         if resp == 0:
-            self.logger.success("Compilation done")
+            LOGGER.info("Compilation done")
         else:
-            self.logger.error("Compilation failed see latex logs for more details")
+            LOGGER.error("Compilation failed see latex logs for more details")
         
         self.rm_inter_file()
 
     def rm_inter_file(self):
         """ remove the intermediate files """
-        self.logger.indication("Removing intermediate files")
+        LOGGER.info("Removing intermediate files")
         
         for f in listdir(self.conf['output'].get('path')):
             if f.split(".")[-1] in LATEX_INTER_FILE:
                 try:
                     remove(f"{self.conf['output'].get('path')}/{f}")
                 except Exception as e:
-                    self.logger.error(f"Error while removing {f} : {e}")
+                    LOGGER.error(f"Error while removing {f} : {e}")
 
     def execute_unix_command(self, command):
         """ execute the command and retrieve its output """

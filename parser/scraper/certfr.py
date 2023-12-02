@@ -4,10 +4,11 @@
 from bs4 import BeautifulSoup, GuessedAtParserWarning
 
 import warnings
-from json import dumps
 
 from ..page_parser import PageParser
 from cert_bulletin_gen.models import Event
+
+from cert_bulletin_gen.logger import LOGGER
 
 class Certfr(PageParser):
     """ Parse the certfr bulletin """
@@ -22,7 +23,7 @@ class Certfr(PageParser):
 
     def start_treament(self):
         """ Start the treatment """
-        self.logger.indication("Start treatment of certfr")
+        LOGGER.info("Start treatment of certfr")
         for url in self.urls:
             content = self.send_request(url)
 
@@ -50,10 +51,10 @@ class Certfr(PageParser):
                 all_cve.extend(research)
             
             if isinstance(all_cve, int):
-                self.logger.info(f"No events found for: {url}")
+                LOGGER.warning(f"No events found for: {url}")
                 continue
             for cve in all_cve:
-                self.logger.debug(f"Treatment of {cve}")
+                LOGGER.debug(f"Treatment of {cve}")
                 r_data = self.send_request(
                     f"{url}{cve}"
                 )
@@ -63,9 +64,10 @@ class Certfr(PageParser):
             self.ind_page = 1
 
         if self.events:
-            self.logger.success(f"{len(self.events)} event(s) found for certfr")
+            LOGGER.debug(f"{len(self.events)} event(s) found for certfr")
         else:
-            self.logger.info("No events found for certfr")
+            LOGGER.warning("No events found for certfr")
+        LOGGER.info("End treatment of certfr")
 
     def next_page(self, url):
         """ Return the next page with the extension """

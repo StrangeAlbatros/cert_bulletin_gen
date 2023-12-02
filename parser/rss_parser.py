@@ -11,7 +11,6 @@ class RssParser(AbstractParser):
     def __init__(self, **kwargs) -> None:
         super().__init__()
         self.data = []
-        self.logger = kwargs.get('logger')
         self.url = kwargs.get('url')
         self.min_date = kwargs.get('start_date')
         self.max_date = kwargs.get('end_date')

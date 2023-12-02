@@ -7,9 +7,10 @@ from json import dumps, load
 
 from .parser.scraper import *
 from .models.config import Config
-from .models.logger import Log
 from .models.translator import Translator
 from .export import Exporter
+
+from .logger import LOGGER
 
 class Bulletin:
 
@@ -20,7 +21,8 @@ class Bulletin:
         else:
             self.load_conf()
 
-        self.log = Log(debug=args.debug)
+        if args.debug:
+            LOGGER.set_debug()
 
         if not self.conf:
             raise Exception("ERREUR: Impossible de charger la configuration")
@@ -36,14 +38,12 @@ class Bulletin:
         for obj,name in self.get_scraper():
             if name.lower() in conf_cert:
                 conf_cert[name.lower()].update(self.conf.timeframe)
-                conf_cert[name.lower()].update({"logger":self.log})
                 conf_cert[name.lower()].update({"translator":self.translator})
                 self.parser.append(obj(**(conf_cert[name.lower()])))
 
         # export the data to the latex template
         self.exporter = Exporter(
             data={elt.__class__.__name__.lower(): elt.events for elt in self.parser},
-            logger=self.log,
             conf={
                 "output":self.conf.output,
                 "template":self.conf.template,

@@ -4,6 +4,8 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, date
 
+from cert_bulletin_gen.logger import LOGGER
+
 MONTHS = {
     "janvier": "January",
     "février": "February",
@@ -23,7 +25,6 @@ class AbstractParser(ABC):
 
     def __init__(self, **kwargs) -> None:
         self.events = []
-        self.logger = kwargs.get('logger')
         self.min_date = kwargs.get('start_date') # min date of the range
         self.max_date = kwargs.get('end_date') # max date of the range
 

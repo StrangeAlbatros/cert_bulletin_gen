@@ -4,6 +4,7 @@
 from ..rss_parser import RssParser
 
 from cert_bulletin_gen.models import RssEvent
+from cert_bulletin_gen.logger import LOGGER
 
 from json import dumps
 from bs4 import BeautifulSoup
@@ -15,7 +16,7 @@ class Cyware(RssParser):
         self.translate = kwargs.get('translate', False)
         self.translator = kwargs.get('translator', None)
         if self.translate and self.translator:
-            self.logger.info("Translation enabled for Cyware RSS feed")
+            LOGGER.debug("Translation enabled for Cyware RSS feed")
 
         self.start_treament()
 
@@ -26,9 +27,10 @@ class Cyware(RssParser):
                 self.events.append(self.get_event(event))
 
         if self.events:
-            self.logger.success(f"{len(self.events)} event(s) found in Cyware RSS feed")
+            LOGGER.debug(f"{len(self.events)} event(s) found in Cyware RSS feed")
         else:
-            self.logger.info("No events found in the RSS feed")
+            LOGGER.info("No events found in the RSS feed")
+        LOGGER.info("End treatment of Cyware RSS feed")
 
     def get_event(self, element):
         """ parse one rss event """

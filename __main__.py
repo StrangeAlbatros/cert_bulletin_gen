@@ -30,18 +30,10 @@ def get_args():
         '--pdf-name', dest='pdf_name', type=str,
         help='name of the pdf file'
     )
-    # parser.add_argument(
-    #     '-o', '--output', dest='output',
-    #     help='output file'
-    # )
-    # parser.add_argument(
-    #     'begin_date', metavar='begin_date', type=str,
-    #     help='begin date'
-    # )
-    # parser.add_argument(
-    #     'end_date', metavar='end_date', type=str,
-    #     help='end date'
-    # )
+    parser.add_argument(
+        '--debug', dest='debug', action='store_true',
+        help='Increase output verbosity'
+    )
     parser.add_argument(
         '--version',
         action='version',
