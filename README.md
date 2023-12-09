@@ -50,7 +50,7 @@ pip3 install -r requirements.txt
 ```
 ## 3. Paramétrage
 
-Pour la configuration allet sur la [documention de paramètre](./doc/setting.MD)
+Pour la configuration allez sur la [documention de paramètre](./doc/setting.MD)
 
 ## 4. Utilisation
 Ce situer dans le dossier parent de la racine de cert_bulletin_gen.
