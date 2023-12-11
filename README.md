@@ -1,5 +1,9 @@
 # cert bulletin gennerator
 
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python%203.10-1f425f.svg?logo=python)](https://www.python.org/)
+![GitHub License](https://img.shields.io/github/license/StrangeAlbatros/cert_bulletin_gen)
+![GitHub repo size](https://img.shields.io/github/repo-size/StrangeAlbatros/cert_bulletin_gen)
+
 ![img certfr](./doc/img/certfr_full_logo.png)
 
 Application qui génère un bulletin de veille informatique à partir des alertes du [certfr](https://www.cert.ssi.gouv.fr/alerte/)
