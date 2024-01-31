@@ -1,4 +1,4 @@
-# Parametre
+# Paramétrage
 
 ## Paramètre globale
 
