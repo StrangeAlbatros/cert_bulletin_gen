@@ -38,7 +38,7 @@ Configuration des différents Parser.
 
 Un parseur doit avoir le même nom que le *nom.py* du parser.
 
-- `template_name`(obligatoire): nom du template à utilisé
+- `template_name`(obligatoire): nom du template à utiliser
 - `url` (obligatoire) : liste des urls à utiliser
 - `title` (obligatoire) : nom du cert
 - `description`  (obligatoire): description du cert
@@ -70,7 +70,7 @@ exemple pour **Certfr** et **cyware**:
 
 ## Timeframe
 
-Paramétrage des l'intervalle temporel de CVE à mettre dans le bulletin
+Paramétrage deA l'intervalle temporel de CVE à mettre dans le bulletin
 ```json
 "timeframe": {
     "range": "week",
@@ -79,7 +79,7 @@ Paramétrage des l'intervalle temporel de CVE à mettre dans le bulletin
 ```
 ### Range
 
-l'option `range` est obligatoire pour spécifer que l'intervalle temporel est realtif
+l'option `range` est obligatoire, elle spécifie l'intervalle temporel relatif
 choix disponible:
 - week: toutes les semaines
 - month: tous les mois (pas encore opérationnel)
